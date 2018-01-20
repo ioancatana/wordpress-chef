@@ -1,0 +1,45 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: centos-6.6
+    attributes:
+      
+suites:
+  - name: web
+    driver:
+      vm_hostname: web.lab.local
+      network:
+      - ["private_network", {ip: "192.168.56.102"}]
+      customize:
+        memory: 1024
+        cpus: 1
+    run_list:
+      - recipe[webapp::web]
+      
+  - name: db
+    driver:
+      vm_hostname: db.lab.local
+      network:
+      - ["private_network", {ip: "192.168.56.103"}]
+      customize:
+        memory: 1024
+        cpus: 1
+    run_list:
+      - recipe[webapp::db]
+      
+  - name: mon
+    driver:
+      vm_hostname: mon.lab.local
+      network:
+      - ["private_network", {ip: "192.168.56.104"}]
+      customize:
+        memory: 1024
+        cpus: 1
+    run_list:
+      - recipe[webapp::nagios]
+      
